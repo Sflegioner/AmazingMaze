@@ -1,7 +1,13 @@
 import random
 import time
 
-n = int(input("Veuillez rentrer un nombre : "))
+while True :
+    n = int(input("Veuillez rentrer un nombre en dessous de 45 : "))
+    if n<=45 :
+        break
+    else :
+        print("Le nombre d'appel récursif sera trop élevé si n>45, et le programme plantera.")
+
 
 def labyrinthe(n):
     largeur = 2*n+1
@@ -16,6 +22,12 @@ def labyrinthe(n):
 def afficher(grille) :
     for ligne in grille :
         print(''.join(ligne))
+
+def afficher_dans_fichier(grille) :
+    texte = ""
+    for ligne in grille : 
+        texte +=''.join(ligne) + "\n"
+    return texte
 
 grille_generee = labyrinthe(n)
 
@@ -58,3 +70,20 @@ grille_generee[2*n][2*n] = "."
 afficher(grille_generee)
 fin = time.time() - depart
 print(f"Le temps total de création du labyrinthe avec le backtracking récursif est de {fin} secondes.")
+
+while True:                                  
+    nom_fichier = input("Veuillez rentrer un nom de fichier : ")
+    try:
+        # "x" crée le fichier, et lève FileExistsError s'il existe déjà
+        with open(f"{nom_fichier}.txt", "x"):
+            pass                             # on ne fait rien : on voulait juste créer le fichier
+        break                                # aucune erreur -> on sort de la boucle
+    except FileExistsError:
+        print("Nom déjà utilisé, donnez un autre nom.")
+
+
+with open(f"{nom_fichier}.txt", "a") as f :
+    f.write(f"{afficher_dans_fichier(grille_generee)}")
+    print("Fichier généré !")
+with open(".gitignore", "a") as f:
+  f.write(f"{nom_fichier}.txt")
