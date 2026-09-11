@@ -65,8 +65,8 @@ def backtracking(grille, y, x, n):
 
 depart = time.time()
 backtracking(grille_generee, 1, 1, n)
-grille_generee[0][0] = "."
-grille_generee[2*n][2*n] = "."
+grille_generee[1][0] = "."
+grille_generee[2*n-1][2*n] = "."
 afficher(grille_generee)
 fin = time.time() - depart
 print(f"Le temps total de création du labyrinthe avec le backtracking récursif est de {fin} secondes.")
