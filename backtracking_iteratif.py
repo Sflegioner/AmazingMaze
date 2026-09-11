@@ -1,16 +1,6 @@
 import random
 import time
 
-while True:                                  
-    nom_fichier = input("Veuillez rentrer un nom de fichier : ")
-    try:
-        # "x" crée le fichier, et lève FileExistsError s'il existe déjà
-        with open(f"{nom_fichier}.txt", "x"):
-            pass                             # on ne fait rien : on voulait juste créer le fichier
-        break                                # aucune erreur -> on sort de la boucle
-    except FileExistsError:
-        print("Nom déjà utilisé, donnez un autre nom.")
-
 n = int(input("Veuillez rentrer un nombre : "))
 
 def labyrinthe(n):
@@ -69,11 +59,30 @@ def backtracking(grille, n):
 
 depart = time.time()
 grille_finale = backtracking(grille_generee, n)
-grille_finale[0][0] = "."
-grille_finale[2*n][2*n] = "."
+grille_finale[0][1] = "."
+grille_finale[2*n-1][2*n] = "."
 afficher(grille_finale)
 fin = time.time() - depart
 print(f"Le temps total de création du labyrinthe avec le backtracking itératif est de {fin} secondes.")
 
+###### Affichage et création fichier :
+def afficher_dans_fichier(grille) :
+    texte = ""
+    for ligne in grille : 
+        texte +=''.join(ligne) + "\n"
+    return texte
+
+while True:                                  
+    nom_fichier = input("Veuillez rentrer un nom de fichier : ")
+    try:
+        # "x" crée le fichier, et lève FileExistsError s'il existe déjà
+        with open(f"{nom_fichier}.txt", "x"):
+            pass                             # on ne fait rien : on voulait juste créer le fichier
+        break                                # aucune erreur -> on sort de la boucle
+    except FileExistsError:
+        print("Nom déjà utilisé, donnez un autre nom.")
+
+
 with open(f"{nom_fichier}.txt", "a") as f :
     f.write(f"{afficher_dans_fichier(grille_finale)}")
+    print("Fichier généré !")

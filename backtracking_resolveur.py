@@ -1,0 +1,3 @@
+grille = 
+
+def backtracking(grille)

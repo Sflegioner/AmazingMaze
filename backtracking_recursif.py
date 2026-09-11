@@ -71,6 +71,7 @@ afficher(grille_generee)
 fin = time.time() - depart
 print(f"Le temps total de création du labyrinthe avec le backtracking récursif est de {fin} secondes.")
 
+###### Affichage et création fichier :
 while True:                                  
     nom_fichier = input("Veuillez rentrer un nom de fichier : ")
     try:
@@ -85,5 +86,3 @@ while True:
 with open(f"{nom_fichier}.txt", "a") as f :
     f.write(f"{afficher_dans_fichier(grille_generee)}")
     print("Fichier généré !")
-with open(".gitignore", "a") as f:
-  f.write(f"{nom_fichier}.txt")
