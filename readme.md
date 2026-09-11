@@ -15,3 +15,7 @@ Backtracking itératif :
 - Pour n=50, le temps total de création du labyrinthe avec le backtracking itératif est de 0.00559 secondes.     
 
 Nous constatons que le backtracking récursif toruve ses limites relativement rapidement par rapport à l'itératif.
+
+
+### **2) Création de labyrinthe avec l'algorithme de Kruskal**
+
