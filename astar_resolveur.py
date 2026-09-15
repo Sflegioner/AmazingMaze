@@ -1,4 +1,5 @@
 import heapq
+import time
 
 def charger_labyrinthe(chemin_fichier):
     with open(chemin_fichier) as f:
@@ -93,7 +94,9 @@ n = deduire_n(grille)
 debut = (1, 1)
 fin = (2*n - 1, 2*n - 1)   # corrigé
 
+depart = time.time()
 chemin, cout, explores = astar(grille, debut, fin, n)
+fin = time.time() - depart
 
 
 if chemin is None:
@@ -106,7 +109,7 @@ else:
             with open(chemin_sortie, "x"):
                 pass
             sauvegarder_solution(grille, chemin, explores, chemin_sortie)
-            print(f"Chemin trouvé (coût = {cout}). Résultat écrit dans {chemin_sortie}.")
+            print(f"Chemin trouvé (coût = {cout}) en {fin} secondes. Résultat écrit dans {chemin_sortie}.")
             break
         except FileExistsError:
             print("Nom déjà utilisé, donnez un autre nom.")
