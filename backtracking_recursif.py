@@ -1,12 +1,16 @@
 import random
 import time
+import sys
 
-while True :
-    n = int(input("Veuillez rentrer un nombre en dessous de 44 : "))
-    if n<=45 :
-        break
-    else :
-        print("Le nombre d'appel récursif sera trop élevé si n>45, et le programme plantera.")
+
+n = int(input("Veuillez rentrer un nombre : "))
+
+sys.setrecursionlimit((2*n+1)**2)
+
+    # if n<=45 :
+    #     break
+    # else :
+    #     print("Le nombre d'appel récursif sera trop élevé si n>45, et le programme plantera.")
 
 
 def labyrinthe(n):
@@ -83,6 +87,6 @@ while True:
         print("Nom déjà utilisé, donnez un autre nom.")
 
 
-with open(f"{nom_fichier}.txt", "a") as f :
+with open(f"{nom_fichier}_btrg.txt", "a") as f :
     f.write(f"{afficher_dans_fichier(grille_generee)}")
     print("Fichier généré !")

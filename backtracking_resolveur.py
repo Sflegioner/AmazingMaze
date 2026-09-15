@@ -7,6 +7,12 @@ def lire_labyrinthe(nom_fichier):
         lignes = f.read().splitlines()
     return [list(ligne) for ligne in lignes]
 
+def deduire_n(grille):
+    # La grille fait toujours (2n+1) x (2n+1) : n s'en déduit directement
+    hauteur = len(grille)
+    largeur = len(grille[0])
+    assert hauteur == largeur, "la grille n'est pas carrée"
+    return (hauteur - 1) // 2
 
 def afficher(grille):
     for ligne in grille:
@@ -69,9 +75,10 @@ def resoudre(grille, y, x, y_sortie, x_sortie, visite):
 
 
 if __name__ == "__main__":
-    
     nom_fichier = input("Nom du fichier du labyrinthe a resoudre : ")
     grille = lire_labyrinthe(nom_fichier)
+    n = deduire_n(grille)
+    sys.setrecursionlimit((2*n+1)**2)
 
     entree, sortie = trouver_entree_sortie(grille)
     if entree is None or sortie is None:

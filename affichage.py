@@ -5,6 +5,7 @@ import numpy as np
 
 def afficher_labyrinthe(chemin_fichier, chemin_image_sortie=None):
     # Lecture du fichier texte (grille de caractères #, ., o, *)
+    chemin_fichier = chemin_fichier+".txt"
     with open(chemin_fichier) as f:
         lignes = [ligne.rstrip("\n") for ligne in f if ligne.strip() != ""]
 
@@ -45,7 +46,7 @@ def afficher_labyrinthe(chemin_fichier, chemin_image_sortie=None):
     plt.close()  # libère la figure, indispensable si la fonction est appelée en boucle
 
 if __name__ == "__main__":
-    chemin_fichier = input("Veuillez rentrer un nom de fichier : ")
+    chemin_fichier = str(input("Veuillez rentrer un nom de fichier : "))
     chemin_image_sortie = input("Nom du fichier image de sortie (ex: labyrinthe.png) : ")
     afficher_labyrinthe(chemin_fichier, chemin_image_sortie)
 
