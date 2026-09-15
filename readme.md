@@ -1,5 +1,7 @@
 # **Amazing Maze**    
 
+## **Création de labirynthe**
+
 ### **1) Création de labytrinthe avec le backtracking itératif et le backtracking récursif**      
 Dans cette première phase, nous avons créé des labyrinthes à l'aide de l'algorithme de backtracking, qui nous apermis de produire des labyrinthes parfaits dans un temps relativement réduit.     
 
@@ -17,5 +19,12 @@ Backtracking itératif :
 Nous constatons que le backtracking récursif toruve ses limites relativement rapidement par rapport à l'itératif.
 
 
-### **2) Création de labyrinthe avec l'algorithme de Kruskal**
+### **2) Création de labyrinthe avec l'algorithme de Kruskal**     
+
+## **Résolution de labyrinthe**
+
+### **1) Le backtracking**   
+
+### **2) Astar**
+
 

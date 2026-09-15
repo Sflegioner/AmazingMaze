@@ -80,7 +80,7 @@ while True:
         print("Nom déjà utilisé, donnez un autre nom.")
 
 
-with open(f"{nom_fichier}.txt", "a") as f :
+with open(f"{nom_fichier}_kg.txt", "a") as f :
     f.write(f"{afficher_dans_fichier(grille_finale)}")
     print("Fichier généré !")
 

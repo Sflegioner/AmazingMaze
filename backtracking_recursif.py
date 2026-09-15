@@ -2,7 +2,7 @@ import random
 import time
 
 while True :
-    n = int(input("Veuillez rentrer un nombre en dessous de 45 : "))
+    n = int(input("Veuillez rentrer un nombre en dessous de 44 : "))
     if n<=45 :
         break
     else :
@@ -76,7 +76,7 @@ while True:
     nom_fichier = input("Veuillez rentrer un nom de fichier : ")
     try:
         # "x" crée le fichier, et lève FileExistsError s'il existe déjà
-        with open(f"{nom_fichier}.txt", "x"):
+        with open(f"{nom_fichier}_btrg.txt", "x"):
             pass                             # on ne fait rien : on voulait juste créer le fichier
         break                                # aucune erreur -> on sort de la boucle
     except FileExistsError:

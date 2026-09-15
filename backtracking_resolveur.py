@@ -1,4 +1,5 @@
 import sys
+import time
 
 
 def lire_labyrinthe(nom_fichier):
@@ -68,7 +69,7 @@ def resoudre(grille, y, x, y_sortie, x_sortie, visite):
 
 
 if __name__ == "__main__":
-
+    
     nom_fichier = input("Nom du fichier du labyrinthe a resoudre : ")
     grille = lire_labyrinthe(nom_fichier)
 
@@ -80,6 +81,7 @@ if __name__ == "__main__":
     y_entree, x_entree = entree
     y_sortie, x_sortie = sortie
 
+    depart = time.time()
     try:
         trouve = resoudre(grille, y_entree, x_entree, y_sortie, x_sortie, set())
     except RecursionError:
@@ -90,7 +92,7 @@ if __name__ == "__main__":
         print("Aucun chemin trouve entre l'entree et la sortie.")
 
     afficher(grille)
-
-    nom_sortie = input("Nom du fichier de sortie (labyrinthe + solution) : ")
-    with open(f"{nom_sortie}.txt", "w") as f:
+    arrivee = time.time() - depart
+    nom_sortie = input(f"La solution a été générée en {arrivee:.6f} secondes. Nom du fichier de sortie (labyrinthe + solution) : ")
+    with open(f"{nom_sortie}_btr.txt", "w") as f:
         f.write(afficher_dans_fichier(grille))
