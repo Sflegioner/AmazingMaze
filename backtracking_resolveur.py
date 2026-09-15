@@ -50,6 +50,7 @@ def trouver_entree_sortie(grille):
 
 
 def resoudre(grille, y, x, y_sortie, x_sortie, visite):
+    global compteur
     if (y, x) == (y_sortie, x_sortie):
         grille[y][x] = "o"
         return True
@@ -58,6 +59,7 @@ def resoudre(grille, y, x, y_sortie, x_sortie, visite):
 
     direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     for dy, dx in direction:
+        compteur += 1
         ny, nx = y + dy, x + dx
         deplacement_valide = (
             0 <= ny < len(grille)
@@ -75,6 +77,7 @@ def resoudre(grille, y, x, y_sortie, x_sortie, visite):
 
 
 if __name__ == "__main__":
+    compteur = 0
     nom_fichier = input("Nom du fichier du labyrinthe a resoudre : ")
     grille = lire_labyrinthe(nom_fichier)
     n = deduire_n(grille)
@@ -100,6 +103,6 @@ if __name__ == "__main__":
 
     afficher(grille)
     arrivee = time.time() - depart
-    nom_sortie = input(f"La solution a été générée en {arrivee:.6f} secondes. Nom du fichier de sortie (labyrinthe + solution) : ")
+    nom_sortie = input(f"La solution a été générée en {arrivee:.6f} secondes pour un coût de {compteur} opérations (test de voisins). Nom du fichier de sortie (labyrinthe + solution) : ")
     with open(f"{nom_sortie}_btr.txt", "w") as f:
         f.write(afficher_dans_fichier(grille))
