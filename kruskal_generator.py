@@ -10,7 +10,7 @@ def cellules_voisines(mur):
         return (y, x-1), (y, x+1)
     else:            # mur vertical -> haut/bas
         return (y-1, x), (y+1, x)
-    
+
 # Génération de la grille :
 def labyrinthe(n):
     grille = []
@@ -18,6 +18,13 @@ def labyrinthe(n):
         ligne = ['#' for _ in range(2*n+1)]
         grille.append(ligne)
     return grille
+
+def find(groupe, c):
+    # Remonte jusqu'à la racine, en compressant le chemin au passage
+    while groupe[c] != c:
+        groupe[c] = groupe[groupe[c]]  # saute un niveau (compression partielle)
+        c = groupe[c]
+    return c
 
 def generer_labyrinthe():
     grille = labyrinthe(n)
@@ -35,18 +42,15 @@ def generer_labyrinthe():
     random.shuffle(murs)
 
     # Kruskal
-    for mur in murs : 
-        c1, c2 = cellules_voisines(mur)
-
-        # On casse le mur
-        if groupe[c1] != groupe[c2]:
+    for mur in murs:
+        c1, c2 = cellules_voisines(mur)          # un seul argument, comme défini plus haut
+        r1, r2 = find(groupe, c1), find(groupe, c2)
+        if r1 != r2:
             (y, x) = mur
             grille[y][x] = "."
-            rep1, rep2 = groupe[c1], groupe[c2]
-            # Fusion des groupes
-            for c in groupe :
-                if groupe[c] == rep2:
-                    groupe[c] = rep1
+            groupe[r2] = r1   # une seule affectation, pas de boucle sur tout le dict
+        # (ancien bloc naïf supprimé : il refaisait le même travail en O(n²))
+
     return grille
 
 def afficher(grille) :
@@ -60,7 +64,7 @@ grille_finale[0][1] = "."
 grille_finale[2*n-1][2*n] = "."
 afficher(grille_finale)
 fin = time.time() - depart
-print(f"Le temps total de création du labyrinthe avec le backtracking récursif est de {fin} secondes.")
+print(f"Le temps total de création du labyrinthe avec Kruskal est de {fin} secondes.")
 
 ###### Affichage et création fichier :
 def afficher_dans_fichier(grille) :
@@ -83,4 +87,3 @@ while True:
 with open(f"{nom_fichier}_kg.txt", "a") as f :
     f.write(f"{afficher_dans_fichier(grille_finale)}")
     print("Fichier généré !")
-
