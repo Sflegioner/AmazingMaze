@@ -5,3 +5,5 @@
 *.txt
 
 venv
+
+.venv
