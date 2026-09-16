@@ -12,8 +12,6 @@ while True :
         "Entrez votre choix : "
     )
 
-
-
 # Backtracking itératif :
     if choix_utilisateur == "1" :
         n = int(input("Veuillez rentrer un nombre : "))

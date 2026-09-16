@@ -8,7 +8,7 @@ def A_Star(name_of_file:str):
     #               y,x
     maze = load_maze(name_of_file)
 
-    current_cell = [0,1]
+    current_cell = [1,0]
     finish_point = [len(maze) - 2, len(maze[0]) - 1]
     maze[finish_point[0]][finish_point[1]] = "."
 

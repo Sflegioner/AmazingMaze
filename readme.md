@@ -3,15 +3,21 @@
 ## **Création de labirynthe**
 
 ### **1) Création de labytrinthe avec le backtracking itératif et le backtracking récursif**      
-L'algorithme de backtracking a la particularité de pouvoir revenir sur ses pas afin de choisir un autre chemin que celui qui vient de le mener dans une impasse. Contrairement à une recherche bruteforce (qui parcours toutes les solutions jusqu'à  trouver la bonne), le backtracking construit des solutions potentielles et peut revenir sur ses pas si la solution candidate en cours n'est pas effective.
+L'algorithme de backtracking a la particularité de pouvoir revenir sur ses pas afin de choisir un autre chemin que celui qui vient de le mener dans une impasse. Contrairement à une recherche bruteforce (qui parcours toutes les solutions jusqu'à trouver la bonne), le backtracking construit des solutions potentielles et peut revenir sur ses pas si la solution candidate en cours n'est pas effective.
 
 Dans cette première phase, nous avons créé des labyrinthes à l'aide de l'algorithme de backtracking, qui nous a permis de produire des labyrinthes parfaits dans un temps relativement réduit.     
 
 **Test pour chacun des algorithmes :**     
-Backtracking récursif :      
+Backtracking récursif : dans un premier temps noous avons laissé la limite de python pour les appel récusifs, pui nous avons déterminé la limite d'appels récursif en fonction de n, avec la formule : sys.setrecursionlimit((2*n+1)**2)        
+
+<u>Limite appels récursif python :</u>      
 - Pour n=10, le temps total de création du labyrinthe avec le backtracking récursif est de 0.000344 secondes.     
 - Pour n=20, Le temps total de création du labyrinthe avec le backtracking récursif est de 0.001026 secondes.    
 - Pour n=50, capacité d'appel récursif de Python dépassé, python ne fini pas le labyrinthe.     
+
+<u>Limite appels récursif (2n+1)² :</u>       
+- Pour n=1000, le temps total de création du labyrinthe avec le backtracking récursif est de 4.42895 secondes.
+
 
 Backtracking itératif :      
 - Pour n=10, le temps total de création du labyrinthe avec le backtracking itératif est de 0.00046 secondes.     
