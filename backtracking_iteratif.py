@@ -76,7 +76,7 @@ while True:
     nom_fichier = input("Veuillez rentrer un nom de fichier : ")
     try:
         # "x" crée le fichier, et lève FileExistsError s'il existe déjà
-        with open(f"{nom_fichier}.txt", "x"):
+        with open(f"{nom_fichier}_btig.txt", "x"):
             pass                             # on ne fait rien : on voulait juste créer le fichier
         break                                # aucune erreur -> on sort de la boucle
     except FileExistsError:
