@@ -15,16 +15,6 @@ MAX_SIZE = 100000
 
 
 def create_maze(n):
-    """
-    Génération d'un labyrinthe parfait avec l'algorithme de Kruskal aléatoire (Union-Find).
-    Principe :
-      - Chaque case (x, y) démarre dans son propre groupe.
-      - On liste tous les murs intérieurs possibles séparant deux cellules adjacentes.
-      - On mélange la liste des murs.
-      - Pour chaque mur entre A et B :
-          Si Find(A) != Find(B) (pas de cycle) -> Union(A, B) et on casse le mur.
-          Sinon (même groupe) -> On garde le mur pour éviter un cycle.
-    """
     if n < 0:
         raise ValueError("La taille du labyrinthe ne peut pas être négative.")
     if n == 0:
@@ -42,58 +32,56 @@ def create_maze(n):
     # Tout est mur au départ
     maze = [['#' for _ in range(size)] for _ in range(size)]
 
-    # Ouvrir toutes les cellules (chambres)
-    for y in range(n):
-        for x in range(n):
-            maze[2 * y + 1][2 * x + 1] = '.'
+    # Cases correspondant aux couloirs
+    visited = [[False for _ in range(n)] for _ in range(n)]
 
-    # Initialisation de la structure Union-Find (Disjoint-Set)
-    # Chaque cellule est son propre parent au départ
-    parent = {(x, y): (x, y) for y in range(n) for x in range(n)}
+    def backtrack(x, y):
+        visited[y][x] = True
 
-    def find(cell):
-        # Recherche du représentant avec compression de chemin
-        if parent[cell] != cell:
-            parent[cell] = find(parent[cell])
-        return parent[cell]
+        # Mélange des 4 directions
+        directions = [
+            (0, -1),   # haut
+            (0, 1),    # bas
+            (-1, 0),   # gauche
+            (1, 0)     # droite
+        ]
 
-    def union(cell_a, cell_b):
-        # Union de deux groupes
-        root_a = find(cell_a)
-        root_b = find(cell_b)
-        if root_a != root_b:
-            parent[root_b] = root_a
-            return True
-        return False
+        random.shuffle(directions)
 
-    # Liste de tous les murs intérieurs possibles
-    # Chaque mur relie deux cellules adjacentes : cell_a et cell_b
-    walls = []
-    for y in range(n):
-        for x in range(n):
-            # Mur horizontal (vers la droite : x + 1)
-            if x + 1 < n:
-                wall_x = 2 * x + 2
-                wall_y = 2 * y + 1
-                walls.append(((x, y), (x + 1, y), wall_x, wall_y))
+        for dx, dy in directions:
+            nx = x + dx
+            ny = y + dy
 
-            # Mur vertical (vers le bas : y + 1)
-            if y + 1 < n:
-                wall_x = 2 * x + 1
-                wall_y = 2 * y + 2
-                walls.append(((x, y), (x, y + 1), wall_x, wall_y))
+            # Vérifier que le voisin est dans la grille
+            if 0 <= nx < n and 0 <= ny < n:
 
-    # Mélanger les murs aléatoirement
-    random.shuffle(walls)
+                # Si le voisin n'a pas encore été visité
+                if not visited[ny][nx]:
 
-    # Parcourir les murs et appliquer le principe de Kruskal
-    for cell_a, cell_b, wall_x, wall_y in walls:
-        # Find(A) et Find(B)
-        if find(cell_a) != find(cell_b):
-            # Groupes différents -> UNION -> casser le mur
-            union(cell_a, cell_b)
-            maze[wall_y][wall_x] = '.'
-        # Sinon même groupe -> REFUSER (garder le mur pour éviter de créer un cycle)
+                    # Coordonnées dans la vraie matrice
+                    current_x = 2 * x + 1
+                    current_y = 2 * y + 1
+
+                    next_x = 2 * nx + 1
+                    next_y = 2 * ny + 1
+
+                    # Ouvrir le couloir
+                    maze[current_y][current_x] = '.'
+
+                    # Casser le mur entre les deux cases
+                    wall_x = (current_x + next_x) // 2
+                    wall_y = (current_y + next_y) // 2
+
+                    maze[wall_y][wall_x] = '.'
+
+                    # Ouvrir la prochaine case
+                    maze[next_y][next_x] = '.'
+
+                    # Récursion
+                    backtrack(nx, ny)
+
+    # Commencer en haut à gauche
+    backtrack(0, 0)
 
     # Entrée
     maze[1][0] = '.'
@@ -184,7 +172,7 @@ def visualize_graph(maze, n, filename=None):
     """
     Affiche et sauvegarde une visualisation de la théorie des graphes :
     - À gauche : Le labyrinthe résolu (grille avec murs, chemin 'o' et impasses '*')
-    - À droite : Le graphe sous-jacent (arbre couvrant G = (V, E) généré par Kruskal).
+    - À droite : Le graphe sous-jacent (arbre couvrant G = (V, E)) avec sommets et arêtes.
     """
     fig, (ax_maze, ax_graph) = plt.subplots(1, 2, figsize=(14, 7))
 
@@ -193,7 +181,7 @@ def visualize_graph(maze, n, filename=None):
     grid = np.array([[char_map.get(c, 0) for c in row] for row in maze])
     cmap = mcolors.ListedColormap(['#2c3e50', '#ecf0f1', '#e74c3c', '#2ecc71'])
     ax_maze.imshow(grid, cmap=cmap)
-    ax_maze.set_title('Labyrinthe Kruskal Résolu (Grille)', fontsize=13, fontweight='bold', pad=12)
+    ax_maze.set_title('Labyrinthe Résolu (Grille)', fontsize=13, fontweight='bold', pad=12)
     ax_maze.axis('off')
 
     # 2. Vue Théorie des Graphes (Arbre couvrant G = (V, E))
@@ -253,7 +241,7 @@ def visualize_graph(maze, n, filename=None):
 
     nb_nodes = G.number_of_nodes()
     nb_edges = G.number_of_edges()
-    ax_graph.set_title(f'Kruskal - Théorie des Graphes : Arbre Couvrant (|V|={nb_nodes}, |E|={nb_edges})', fontsize=12, fontweight='bold', pad=12)
+    ax_graph.set_title(f'Théorie des Graphes : Arbre Couvrant (|V|={nb_nodes}, |E|={nb_edges})', fontsize=13, fontweight='bold', pad=12)
     ax_graph.axis('off')
 
     # Légende explicative
@@ -316,8 +304,8 @@ def main():
         time_total = time_gen + time_solve
 
         save_maze(maze, filename)
-        print(f"Labyrinthe créé et résolu avec Kruskal dans {filename}")
-        print("⏱️  Chronomètre (Kruskal) :")
+        print(f"Labyrinthe créé et résolu dans {filename}")
+        print("⏱️  Chronomètre (DFS Backtracking) :")
         print(f"   - Temps de génération : {time_gen:.6f} secondes")
         print(f"   - Temps de résolution : {time_solve:.6f} secondes")
         print(f"   - Temps total calcul  : {time_total:.6f} secondes")
