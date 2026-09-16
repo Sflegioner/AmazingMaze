@@ -20,14 +20,19 @@ Backtracking itératif :
 - Pour n=100, le temps total de création du labyrinthe avec le backtracking itératif est de 0.22217 secondes.     
 - Pour n=500, le temps total de création du labyrinthe avec le backtracking itératif est de 1.14411 secondes.     
 - Pour n=1000, le temps total de création du labyrinthe avec le backtracking itératif est de 3.25933 secondes.     
-- Pour n=10000, VSCode a planté.     
+- Pour n=10000, Le temps total de création du labyrinthe avec le backtracking itératif est de 317.75809 secondes.    
+- Pour n=100000, VSCode a planté.
 
 Nous constatons que le backtracking récursif trouve ses limites relativement rapidement par rapport à l'itératif.
 
 
 ### **2) Création de labyrinthe avec l'algorithme de Kruskal**     
 L'algorithme de Kruskal est algorithme de recherche de l'arbre couvrant minimum dans un graphe connexe.    
-Il construit une forêt d'arbres couvrant.     
+Il construit une forêt d'arbres couvrant.    
+Il casse des murs entre les cellules uniquement si celles ci ne sont pas déjà connectées via un autre chemin : les cellules sont rangées en groupe, si les groupes ne sont pas reliés, on les fusionne lorsqu'on casse un mur.     
+Dans le contexte de notre recherche du code le plus efficace, nous avons pu optimiser l'algorithme grâce à une amélioration du processus Union-Find. En effet, mon code, à chaque fusion de deux groupes, parcourait l'ensemble des cellules du labyrinthe pour réassigner celles du groupe perdant au groupe gagnant, alors que le code du collègue ne modifie qu'un seul pointeur (celui du chef du groupe perdant) et se contente de remonter le chemin de la cellule concernée pour retrouver son chef, sans toucher au reste de la structure.    
+Dans ce contexte, les poids des arrêtes (murs) étant tous équivalent, on implémente un choix random dans un liste de coordonnées de murs pour enclencher le processus : détermine si les cellules autour de ce mur sont déjà  connectées afin de ne pas créer de boucles.
+
 
 - Pour n=10, le temps total de création du labyrinthe avec l'algorithme de Kruskal est de 0.00058 secondes.     
 - Pour n=20, le temps total de création du labyrinthe avec l'algorithme de Kruskal est de 0.00217 secondes.     
@@ -40,6 +45,8 @@ Il construit une forêt d'arbres couvrant.
 ## **Résolution de labyrinthe**
 
 ### **1) Le backtracking**   
+Nous rappelons que le nombre d'azppel récursifs autorisés dans python on une limite donnée qui dépend de n : sys.setrecursionlimit((2*n+1)**2)     
+
 Pour n= 100 :    
 Le backtracking récursif a prit 0.05318 seconde pour résoudre le labyrinthe.   
 Pour n= 500 :     
@@ -51,7 +58,7 @@ VSCode a planté.
 
 
 ### **2) Astar**     
-Pour cet algorithme, nous allons parler de coût (nombre de moouvement effectués pour arriver jusqu'à la solution) et de temps.
+Pour cet algorithme, nous allons parler de coût (nombre de mouvement effectués pour arriver jusqu'à la solution) et de temps.    
 
 Pour n= 100 :    
 L'algorithme Astar a prit 0.01359 seconde pour résoudre le labyrinthe.   
@@ -61,4 +68,5 @@ Pour n= 1000 :
 L'algorithme Astar a prit 1.67852 secondes pour résoudre le labyrinthe.      
 Pour n= 5000 :     
 L'algorithme Astar a prit 350.23740 (presque 6 minutes) secondes pour résoudre le labyrinthe.      
-
+Pour n=10000 :     
+L'algorithme Astar a fait planter VSCode.      
