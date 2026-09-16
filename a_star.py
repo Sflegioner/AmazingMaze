@@ -47,9 +47,19 @@ def check_next_cell_(maze_to_solve:list,current_cell:list,finish_point:tuple,g:i
         current_cell = list(posible_ways[0])
         print("new point setted")
 
-    elif len(posible_ways)==0:
-        print("DEAT_END")
-        #find where is V and bound(assinne)
+    #find where is V and bound(assinne)
+    elif len(posible_ways) == 0:
+        print("DEAD_END")
+        maze_to_solve[current_cell[0]][current_cell[1]] = "~"
+        for d in directions:
+            new_y = current_cell[0] + directions[d][0]
+            new_x = current_cell[1] + directions[d][1]
+            
+            if maze_to_solve[new_y][new_x] == "o":
+                current_cell = [new_y, new_x]
+                break
+                    
+        return current_cell
 
 
     else:
@@ -101,4 +111,4 @@ def print_maze(maze):
         print("".join(row))
     print()  # Empty line separator
 
-A_Star(name_of_file="to_resolv.txt")
+A_Star(name_of_file="20.txt")
