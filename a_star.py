@@ -17,7 +17,7 @@ def A_Star(name_of_file:str):
     while True:
         g = g + 1
         if current_cell == finish_point:
-            print("FINISH")
+            # print("FINISH")
             maze[finish_point[0]][finish_point[1]] = "o"
             print_maze(maze)
             return
@@ -45,11 +45,11 @@ def check_next_cell_(maze_to_solve:list,current_cell:list,finish_point:tuple,g:i
     #go if its only 1 way to go
     if len(posible_ways) == 1:
         current_cell = list(posible_ways[0])
-        print("new point setted")
+        # print("new point setted")
 
     #find where is V and bound(assinne)
     elif len(posible_ways) == 0:
-        print("DEAD_END")
+        # print("DEAD_END")
         maze_to_solve[current_cell[0]][current_cell[1]] = "~"
         for d in directions:
             new_y = current_cell[0] + directions[d][0]
@@ -70,14 +70,14 @@ def check_next_cell_(maze_to_solve:list,current_cell:list,finish_point:tuple,g:i
             h = heuristic(way[1], finish_point[1], way[0], finish_point[0])
             f = h + g
             list_to_find.append([f,way])
-            print(list_to_find)
+            # print(list_to_find)
         
         best_y,best_x=take_lovest_cells(list_to_find)
         current_cell = [best_y,best_x]
-        print("new point setted")
+        # print("new point setted")
         pass
 
-    print_maze(maze_to_solve)
+    # print_maze(maze_to_solve)
     return current_cell
 
 #____________________________________________________________________
@@ -90,7 +90,7 @@ def take_lovest_cells(arr: list) -> tuple:
     for way in arr:
         if way[0] < best_way[0]:
             best_way = way
-    print(f'Best way - {best_way[1]} - lowest f - {way}')
+    # print(f'Best way - {best_way[1]} - lowest f - {way}')
     return best_way[1]
 
 def heuristic(x2,x1,y2,y1):   

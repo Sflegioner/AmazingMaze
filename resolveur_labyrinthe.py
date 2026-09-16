@@ -126,108 +126,113 @@ while True :
 # Astar :
     if choix_utilisateur== "2":
 
-        def A_Star(name_of_file: str):
+        # f(n) = g(n) + h(n)
+        def A_Star(name_of_file:str): 
+            #               y,x
             maze = load_maze(name_of_file)
 
-            start = (1, 0)
-            finish = (len(maze)-2, len(maze[0])-1)  # attention: -1 et non -2 comme avant
-            maze[finish[0]][finish[1]] = "."
+            current_cell = [0,1]
+            finish_point = [len(maze) - 2, len(maze[0]) - 1]
+            maze[finish_point[0]][finish_point[1]] = "."
 
-            # open_set : file de priorité (f, position) -> on prend toujours la case
-            # au f le plus bas, où qu'elle soit dans le labyrinthe (pas seulement voisine)
-            open_set = [(heuristic(start, finish), start)]
+            g=0
 
-            # g_score : coût réel connu pour atteindre chaque case depuis le départ
-            g_score = {start: 0}
-
-            # came_from : pour chaque case, la case depuis laquelle on y est arrivé
-            # -> permet de reconstruire le chemin final une fois la sortie trouvée
-            came_from = {}
-
-            # closed_set : cases déjà définitivement traitées (évite de les retraiter)
-            closed_set = set()
-
-            directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-
-            while open_set:
-                _, current = heapq.heappop(open_set)
-
-                if current in closed_set:
-                    continue
-                closed_set.add(current)
-
-                if current == finish:
-                    path = reconstruct_path(came_from, current)
-                    mark_path(maze, path, closed_set)
+            while True:
+                g = g + 1
+                if current_cell == finish_point:
+                    # print("FINISH")
+                    maze[finish_point[0]][finish_point[1]] = "o"
                     print_maze(maze)
-                    return
-
-                for dy, dx in directions:
-                    ny, nx = current[0] + dy, current[1] + dx
-                    neighbor = (ny, nx)
-
-                    if not (0 <= ny < len(maze) and 0 <= nx < len(maze[0])):
-                        continue
-                    if maze[ny][nx] == "#":
-                        continue
-                    if neighbor in closed_set:
-                        continue
-
-                    tentative_g = g_score[current] + 1
-
-                    # si on n'a jamais vu cette case, ou si on a trouvé un chemin
-                    # moins coûteux pour l'atteindre, on met à jour
-                    if tentative_g < g_score.get(neighbor, float("inf")):
-                        g_score[neighbor] = tentative_g
-                        came_from[neighbor] = current
-                        f = tentative_g + heuristic(neighbor, finish)
-                        heapq.heappush(open_set, (f, neighbor))
-
-            print("Pas de solution trouvée")
+                    return maze
+                current_cell = check_next_cell_(maze_to_solve=maze,current_cell=current_cell,finish_point=finish_point,g=g)
+            
 
 
-        def reconstruct_path(came_from, current):
-            path = [current]
-            while current in came_from:
-                current = came_from[current]
-                path.append(current)
-            path.reverse()
-            return path
+        def check_next_cell_(maze_to_solve:list,current_cell:list,finish_point:tuple,g:int)->tuple:
+            """return best cell to choose """
+
+            posible_ways = []
+            directions = {"up":(-1,0), "down":(1,0), "left":(0,-1), "right":(0,1)}
+
+            tryed_steps = 0 # for checking dead end only 4 tries if not go and block by ~
+            for d in directions:
+                #try to go untill branching(embranchment)
+                new_y = current_cell[0] + directions[d][0]
+                new_x = current_cell[1] + directions[d][1]
+                #add posible cells to go
+                if maze_to_solve[new_y][new_x] == "." and maze_to_solve[new_y][new_x] != "o":
+                    posible_ways.append((new_y,new_x))
+                    maze_to_solve[current_cell[0]][current_cell[1]] = "o"
+                
+
+            #go if its only 1 way to go
+            if len(posible_ways) == 1:
+                current_cell = list(posible_ways[0])
+                # print("new point setted")
+
+            #find where is V and bound(assinne)
+            elif len(posible_ways) == 0:
+                # print("DEAD_END")
+                maze_to_solve[current_cell[0]][current_cell[1]] = "*"
+                for d in directions:
+                    new_y = current_cell[0] + directions[d][0]
+                    new_x = current_cell[1] + directions[d][1]
+                    
+                    if maze_to_solve[new_y][new_x] == "o":
+                        current_cell = [new_y, new_x]
+                        break
+                            
+                return current_cell
 
 
-        def mark_path(maze, path, closed_set):
-            # "*" pour les cases explorées mais hors chemin final
-            for (y, x) in closed_set:
-                if maze[y][x] == ".":
-                    maze[y][x] = "*"
-            # "o" pour le chemin final (écrase les "*" éventuels sur ce chemin)
-            for (y, x) in path:
-                maze[y][x] = "o"
+            else:
+                #choose best way
+                #mathetan distance to implement
+                list_to_find = []
+                for way in posible_ways:
+                    h = heuristic(way[1], finish_point[1], way[0], finish_point[0])
+                    f = h + g
+                    list_to_find.append([f,way])
+                    # print(list_to_find)
+                
+                best_y,best_x=take_lovest_cells(list_to_find)
+                current_cell = [best_y,best_x]
+                # print("new point setted")
+                pass
 
+            # print_maze(maze_to_solve)
+            return current_cell
 
-        def heuristic(a, b):
-            # distance de Manhattan
-            return abs(a[0] - b[0]) + abs(a[1] - b[1])
+        #____________________________________________________________________
 
+        def take_lovest_cells(arr: list) -> tuple:
+            if not arr:
+                return None  
+            best_way = arr[0]
+            
+            for way in arr:
+                if way[0] < best_way[0]:
+                    best_way = way
+            # print(f'Best way - {best_way[1]} - lowest f - {way}')
+            return best_way[1]
+
+        def heuristic(x2,x1,y2,y1):   
+            return abs(x2 - x1) + abs(y2 - y1)
 
         def load_maze(name_of_file: str):
             maze = []
             with open(name_of_file, "r") as f:
                 for line in f:
-                    line = line.strip()
-                    if line:
-                        maze.append(list(line))
+                    line = line.strip()                 
+                    if line:                            
+                        maze.append(list(line))         
             return maze
 
-
         def print_maze(maze):
+            print("________________________________")
             for row in maze:
                 print("".join(row))
-            print()
-
-        def afficher(grille):
-            for ligne in grille:
-                print(''.join(ligne))
+            print()  # Empty line separator
 
         def afficher_dans_fichier(grille):
             texte = ""
@@ -235,12 +240,17 @@ while True :
                 texte += ''.join(ligne) + "\n"
             return texte
 
+        def lire_labyrinthe(nom_fichier):
+            with open(f"{nom_fichier}.txt", "r") as f:
+                lignes = f.read().splitlines()
+            return [list(ligne) for ligne in lignes]
 
-        name_of_file = input("Nom du fichier du labyrinthe à résoudre : ")
+
+        name_of_file = input("Nom du fichier du labyrinthe à résoudre (sans extension) : ")
         start = time.time()
-        A_Star(name_of_file)
+        solution = A_Star(f"{name_of_file}.txt")   # solution = la grille résolue (liste de listes)
         finish = time.time() - start
         name_output = input(f"Le labyrinthe a été résolu en {finish:.5f} seconde(s). Donnez un nom au fichier généré : ")
         with open(f"{name_output}_ar.txt", "w") as f:
-            f.write(afficher_dans_fichier(name_of_file))
+            f.write(afficher_dans_fichier(solution))
         break
