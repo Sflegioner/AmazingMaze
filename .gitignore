@@ -1,1 +1,11 @@
-to_resolv.txtdf.txtgh.txt
+/test_code
+
+/Cours_code
+
+*.txt
+
+*.png
+
+venv
+
+.venv
