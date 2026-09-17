@@ -17,7 +17,7 @@ Backtracking récursif : dans un premier temps noous avons laissé la limite de 
 
 <u>Limite appels récursif (2n+1)² :</u>       
 - Pour n=1000, le temps total de création du labyrinthe avec le backtracking récursif est de 4.42895 secondes.
-
+- Pour n=5000, VSCode a planté.
 
 Backtracking itératif :      
 - Pour n=10, le temps total de création du labyrinthe avec le backtracking itératif est de 0.00046 secondes.     
@@ -29,7 +29,7 @@ Backtracking itératif :
 - Pour n=10000, Le temps total de création du labyrinthe avec le backtracking itératif est de 317.75809 secondes.    
 - Pour n=100000, VSCode a planté.
 
-Nous constatons que le backtracking récursif trouve ses limites relativement rapidement par rapport à l'itératif.
+Le backtracking itératif peut supporter de plus grandes valeurs de n que le backtracking récursif.
 
 
 ### **2) Création de labyrinthe avec l'algorithme de Kruskal**     
@@ -51,8 +51,9 @@ Dans ce contexte, les poids des arrêtes (murs) étant tous équivalent, on impl
 ## **Résolution de labyrinthe**
 
 ### **1) Le backtracking**   
-Nous rappelons que le nombre d'azppel récursifs autorisés dans python on une limite donnée qui dépend de n : sys.setrecursionlimit((2*n+1)**2)     
+Nous rappelons que le nombre d'appel récursifs autorisés dans python on une limite donnée qui dépend de n : sys.setrecursionlimit((2*n+1)**2)     
 
+**Résolution pour un labyrinthe produit en backtracking récursif :**    
 Pour n= 100 :    
 Le backtracking récursif a prit 0.05318 seconde pour résoudre le labyrinthe.   
 Pour n= 500 :     
@@ -62,10 +63,21 @@ Le backtracking récursif a prit 6.26718 secondes pour résoudre le labyrinthe.
 Pour n= 5000 :     
 VSCode a planté.      
 
+**Résolution pour un labyrinthe crée avec l'algorithme de Kruskal :**     
+Pour n=100 :    
+La solution a été générée en 0.033625 secondes.     
+Pour n= 500 :
+La solution a été générée en 0.692699 secondes.
+Pour n= 1000 :      
+La solution a été générée en 2.835056 secondes.    
+Pour n=5000 :     
+La solution a été générée en 4.103943 secondes.    
+
 
 ### **2) Astar**     
 Pour cet algorithme, nous allons parler de coût (nombre de mouvement effectués pour arriver jusqu'à la solution) et de temps.    
-
+     
+**Résolution pour un labyrinthe produit en backtracking récursif :**    
 Pour n= 100 :    
 L'algorithme Astar a prit 0.01359 seconde pour résoudre le labyrinthe.   
 Pour n= 500 :     
@@ -76,3 +88,13 @@ Pour n= 5000 :
 L'algorithme Astar a prit 350.23740 (presque 6 minutes) secondes pour résoudre le labyrinthe.      
 Pour n=10000 :     
 L'algorithme Astar a fait planter VSCode.      
+
+**Résolution pour un labyrinthe crée avec l'algorithme de Kruskal :**     
+Pour n=100 :    
+La solution a été générée en 0.046972 secondes.     
+Pour n= 500 :
+La solution a été générée en 1.688090 secondes.
+Pour n= 1000 :      
+La solution a été générée en 6.326489 secondes.    
+Pour n=5000 :     
+La solution a été générée en 6.475189 secondes.    La solution a été générée en 4.103943 secondes
