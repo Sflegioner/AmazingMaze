@@ -225,7 +225,7 @@ while True :
             groupe = {c: c for c in cellules}
             
             for (y, x) in cellules : 
-                grille[x][y] = "."
+                grille[y][x] = "."
 
             murs = murs_conn_h + murs_conn_v
             random.shuffle(murs)
