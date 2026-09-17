@@ -97,4 +97,4 @@ La solution a été générée en 1.688090 secondes.
 Pour n= 1000 :      
 La solution a été générée en 6.326489 secondes.    
 Pour n=5000 :     
-La solution a été générée en 6.475189 secondes.    La solution a été générée en 4.103943 secondes
+La solution a été générée en 6.475189 secondes.    
