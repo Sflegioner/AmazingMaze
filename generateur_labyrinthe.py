@@ -232,7 +232,8 @@ while True :
 
             # Kruskal
             for mur in murs:
-                c1, c2 = cellules_voisines(mur)          # un seul argument, comme défini plus haut
+                # Récup des cellules séparées par un mur
+                c1, c2 = cellules_voisines(mur)          
                 r1, r2 = find(groupe, c1), find(groupe, c2)
                 if r1 != r2:
                     (y, x) = mur
