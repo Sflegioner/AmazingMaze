@@ -98,6 +98,7 @@ while True:
         break
 
 
+    # Recursive backtracking
     elif user_choice == "2":
         n = int(input("Please enter a number: "))
 
