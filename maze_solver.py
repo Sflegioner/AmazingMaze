@@ -56,30 +56,32 @@ while True:
             exit_ = find_opening(grid, "bottom") or find_opening(grid, "right")
             return entry, exit_
 
-        def solve(grid, y, x, y_exit, x_exit, visited):
+        def solve(grid, y, x, y_exit, x_exit):
             global counter
+
+            # Arrivée à la sortie
             if (y, x) == (y_exit, x_exit):
                 grid[y][x] = "o"
                 return True
 
-            visited.add((y, x))
+            # Marquer la case courante comme explorée
+            # (une case marquée '*' ne sera plus jamais reproposée comme voisine,
+            # donc plus besoin d'un set "visited" séparé)
+            grid[y][x] = "*"
 
             direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]
             for dy, dx in direction:
                 counter += 1
                 ny, nx = y + dy, x + dx
-                valid_move = (
-                    0 <= ny < len(grid)
-                    and 0 <= nx < len(grid[0])
-                    and grid[ny][nx] != "#"
-                    and (ny, nx) not in visited
-                )
-                if valid_move:
-                    if solve(grid, ny, nx, y_exit, x_exit, visited):
+                # Traverser uniquement les passages libres non encore explorés
+                if 0 <= ny < len(grid) and 0 <= nx < len(grid[0]) and grid[ny][nx] == ".":
+                    if solve(grid, ny, nx, y_exit, x_exit):
+                        # La case participe au chemin final menant à la sortie
                         grid[y][x] = "o"
                         return True
 
-            grid[y][x] = "*"
+            # Si aucune direction ne mène à la sortie,
+            # la case reste '*' (explorée mais ne participant pas au chemin final)
             return False
 
         counter = 0
@@ -98,7 +100,7 @@ while True:
 
         start_time = time.time()
         try:
-            found = solve(grid, y_entry, x_entry, y_exit, x_exit, set())
+            found = solve(grid, y_entry, x_entry, y_exit, x_exit)
         except RecursionError:
             print("Maze too large for recursive backtracking (Python recursion limit reached).")
             sys.exit()
@@ -239,4 +241,8 @@ while True:
         output_name = input(f"The maze was solved in {elapsed:.5f} second(s). Give a name to the generated file: ")
         with open(f"{output_name}_ar.txt", "w") as f:
             f.write(display_to_file(solution))
+        break
+
+    elif user_choice == "q":
+        print("End of program.")
         break
