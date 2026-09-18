@@ -258,6 +258,7 @@ def visualize_graph(maze, n, filename=None):
         print(f"Graphique de théorie des graphes sauvegardé dans {img_filename}")
 
     try:
+        import matplotlib
         if matplotlib.get_backend().lower() != 'agg':
             plt.show()
     except Exception:
