@@ -90,36 +90,35 @@ while True :
             grille[y][x] = "*"
             return False
 
-        if __name__ == "__main__":
-            compteur = 0
-            nom_fichier = input("Nom du fichier du labyrinthe a resoudre : ")
-            grille = lire_labyrinthe(nom_fichier)
-            n = deduire_n(grille)
-            sys.setrecursionlimit((2*n+1)**2)
+        compteur = 0
+        nom_fichier = input("Nom du fichier du labyrinthe a resoudre : ")
+        grille = lire_labyrinthe(nom_fichier)
+        n = deduire_n(grille)
+        sys.setrecursionlimit((2*n+1)**2)
 
-            entree, sortie = trouver_entree_sortie(grille)
-            if entree is None or sortie is None:
-                print("Impossible de trouver l'entree ou la sortie sur les bords de la grille.")
-                sys.exit()
+        entree, sortie = trouver_entree_sortie(grille)
+        if entree is None or sortie is None:
+            print("Impossible de trouver l'entree ou la sortie sur les bords de la grille.")
+            sys.exit()
 
-            y_entree, x_entree = entree
-            y_sortie, x_sortie = sortie
+        y_entree, x_entree = entree
+        y_sortie, x_sortie = sortie
 
-            depart = time.time()
-            try:
-                trouve = resoudre(grille, y_entree, x_entree, y_sortie, x_sortie, set())
-            except RecursionError:
-                print("Labyrinthe trop grand pour le backtracking recursif (limite de recursion Python atteinte).")
-                sys.exit()
+        depart = time.time()
+        try:
+            trouve = resoudre(grille, y_entree, x_entree, y_sortie, x_sortie, set())
+        except RecursionError:
+            print("Labyrinthe trop grand pour le backtracking recursif (limite de recursion Python atteinte).")
+            sys.exit()
 
-            if not trouve:
-                print("Aucun chemin trouve entre l'entree et la sortie.")
+        if not trouve:
+            print("Aucun chemin trouve entre l'entree et la sortie.")
 
-            afficher(grille)
-            arrivee = time.time() - depart
-            nom_sortie = input(f"La solution a été générée en {arrivee:.6f} secondes pour un coût de {compteur} opérations (test de voisins). Nom du fichier de sortie (labyrinthe + solution) : ")
-            with open(f"{nom_sortie}_btr.txt", "w") as f:
-                f.write(afficher_dans_fichier(grille))
+        afficher(grille)
+        arrivee = time.time() - depart
+        nom_sortie = input(f"La solution a été générée en {arrivee:.6f} secondes pour un coût de {compteur} opérations (test de voisins). Nom du fichier de sortie (labyrinthe + solution) : ")
+        with open(f"{nom_sortie}_btr.txt", "w") as f:
+            f.write(afficher_dans_fichier(grille))
         break
 
 
