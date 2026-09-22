@@ -31,7 +31,7 @@ def display_maze(file_path, output_image_path=None):
                 raise ValueError(
                     f"Unexpected character '{character}' at position ({y}, {x})"
                 )
-            num_grid[y, x] = mapping.get(character, 1)
+            num_grid[y, x] = mapping[character]
 
     # One color per value, in order 0, 1, 2, 3
     colors = ["black", "white", "orange", "red"]
