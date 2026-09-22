@@ -250,8 +250,8 @@ while True:
         final_grid = generate_maze()
         final_grid[0][1] = "."
         final_grid[2 * n - 1][2 * n] = "."
-        display(final_grid)
         elapsed = time.time() - start_time
+        display(final_grid)
         print(f"The total time to create the maze with Kruskal is {elapsed} seconds.")
 
         ###### Display and file creation:
